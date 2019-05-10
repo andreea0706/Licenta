@@ -1,0 +1,165 @@
+﻿@model ProductViewModel
+
+
+@{
+    ViewData["Title"] = "Produsele mele";
+}
+
+<h2>Produse</h2>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Product.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Product.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.Product.HasVAT)</th>
+            <th>@Html.DisplayNameFor(model => model.Product.MeasureUnit)</th>
+            <th>@Html.DisplayNameFor(model => model.Product.Currency)</th>
+            <th>@Html.DisplayNameFor(model => model.Product.Categ)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+            <td>@Html.DisplayFor(modelItem => item.HasVAT)</td>
+            <td>@Html.DisplayFor(modelItem => item.MeasureUnit)</td>
+            <td>@Html.DisplayFor(modelItem => item.Currency)</td>
+            <td>@Html.DisplayFor(modelItem => item.Categ)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+         }
+    </tbody>
+</table>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="add-product">
+    Produs Nou
+</button>
+
+<br />
+<br />
+<h2>Categoriile mele</h2>
+
+<div class="list-group list-group-flush" >
+    @foreach (var item in Model.Categories)
+    {
+        <a style="width:200px" class="list-group-item list-group-item-success" data-toggle="collapse" href="#@item.Name">@Html.DisplayFor(modelItem => item.Name) </a>
+        <a class="collapse" id="@item.Name">@Html.DisplayFor(modelItem => item.Description)</a>
+   
+    }
+</div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="add-category">
+    Adauga o categorie
+</button>
+
+
+<!-- Modal Add Category -->
+<div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Categorie Noua</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form asp-controller="Product" asp-action="CreateCategory" method="post">
+                        <div class="form-group">
+                            <label asp-for="Category.Name"></label>
+                            <input asp-for="Category.Name" class="form-control" />
+                            <span asp-validation-for="Category.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Category.Description"></label>
+                            <input asp-for="Category.Description" class="form-control" />
+                            <span asp-validation-for="Category.Description" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="HidebtnModal">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Product-->
+<div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Adauga un produs</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <form asp-controller="Product" asp-action="CreateProduct" method="post">
+                        <div class="form-group">
+                            <label asp-for="Product.Name"></label>
+                            <input asp-for="Product.Name" class="form-control" />
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Description"></label>
+                            <input asp-for="Product.Description" class="form-control" />
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="Product.HasVAT" type="checkbox" class="form-check-input" />
+                            <label asp-for="Product.HasVAT"></label>
+                            <span asp-validation-for="Product.HasVAT" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Categ" class="control-label"></label>
+                            <select asp-for="Category.Id"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(Model.Categories,"Id", "Name"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Price"></label>
+                            <input asp-for="Product.Price" class="form-control" />
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="HidebtnModal">Save</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#add-category").click(function () {
+            $("#addCategory").modal('show');
+        });
+
+        $("#HidebtnModal").click(function () {
+            $("#addCategory").modal('hide');
+        });
+
+        $("#add-product").click(function () {
+            $("#addProduct").modal('show');
+        });
+
+        $("#HidebtnModal").click(function () {
+            $("#addProduct").modal('hide');
+        });
+    });
+</script>

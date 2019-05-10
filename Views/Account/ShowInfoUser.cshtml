@@ -1,0 +1,29 @@
+﻿@inject SignInManager<Partner> SignInManager
+@inject UserManager<Partner> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+}
+<h3>Informatii firma</h3>
+
+<br />
+<div>
+    <label class="">Email:</label>
+    <span>@UserManager.GetUserName(User)</span>
+</div>
+
+<div>
+<label class="">Nume firma:</label>
+<span>@user.FirmName</span>
+</div>
+
+<div>
+<label class="">CUI:</label>
+<span>@user.cui</span>
+</div>
+
+<div>
+<label class="">Adresa:</label>
+<span>@user.Address</span>
+</div>

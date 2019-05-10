@@ -1,0 +1,16 @@
+﻿@model FacturaOnline.ViewModels.GetInfoAnafViewModel
+@{
+    ViewData["Title"] = "Introduce CIF";
+}
+
+<div class="col-md-4 col-md-offset-4" style="margin-top: 50px">
+    <form asp-controller="Account" asp-action="ReturnInfoAnaf" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get" class="form-horizontal">
+        <h2>Bine ai venit!</h2>
+        <h4>Te rog sa introduci Codul de identificare fiscala (CIF)</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input asp-for="cui" class="form-control" placeholder="CIF" required>
+        <button type="submit" class="btn btn-default" style="margin-top: 50px">Register</button>
+    </form>
+
+</div>

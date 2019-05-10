@@ -1,0 +1,122 @@
+﻿@model CustomerViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="btnclick">
+    Client Nou
+</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Customer.FirmName)</th>
+            <th>@Html.DisplayNameFor(model => model.Customer.Address)</th>
+            <th>@Html.DisplayNameFor(model => model.Customer.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Customer.RepName)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Customers)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.FirmName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+            <td>@Html.DisplayFor(modelItem => item.RepName)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-customer" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Adauga un client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="text-center" id="tip-persoana">
+                    <button type="button" class="btn btn-primary" id="persoana-fizica">Persona fizica</button>
+                    <span>SAU</span>
+                    <button type="button" class="btn btn-primary" id="persoana-juridica">Persona juridica</button>
+                </div>
+                <div id="form-juridica" style="display:none">
+                    <form asp-controller="Customer" asp-action="ReturnInfoAnaf" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get" class="form-horizontal">
+                        <h4>Te rog sa introduci Codul de identificare fiscala (CIF)</h4>
+                        <hr />
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input asp-for="cui" class="form-control" placeholder="CIF" required>
+                        <button type="submit" class="btn btn-default" style="margin-top: 50px" id="HidebtnModal">Save</button>
+                    </form>
+                </div>
+
+                <div id="form-fizica" style="display:none">
+                    <form asp-controller="Customer" asp-action="CreateCustomer" method="post">
+                        <div class="form-group">
+                            <label asp-for="Customer.FirmName"></label>
+                            <input asp-for="Customer.FirmName" class="form-control" />
+                            <span asp-validation-for="Customer.FirmName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Customer.Address"></label>
+                            <input asp-for="Customer.Address" class="form-control" />
+                            <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Customer.Email"></label>
+                            <input asp-for="Customer.Email" class="form-control" />
+                            <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Customer.RepName"></label>
+                            <input asp-for="Customer.RepName" class="form-control" />
+                            <span asp-validation-for="Customer.RepName" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="HidebtnModal">Save</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#persoana-juridica").click(function () {
+            $("#form-juridica").show();
+            $("#tip-persoana").hide();
+        });
+
+        $("#persoana-fizica").click(function () {
+            $("#form-fizica").show();
+            $("#tip-persoana").hide();
+        });
+        $("#btnclick").click(function () {
+            $("#add-customer").modal('show');
+        });
+
+        $("#HidebtnModal").click(function () {
+            $("#add-customer").modal('hide');
+        });
+    });
+</script>
+
+
